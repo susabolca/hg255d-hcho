@@ -1,0 +1,45 @@
+# HG255D HCHO Wireless Sensor
+
+Use the HG255D(OPENWRT router) to push HCHO level data to remote pushgateway.
+
+## Hardware
+
+A HG255D router that can connect to internet,
+connects DART sensor using a USB PL2302 cable.
+
+```
+[DART HCHO sensor] <-- TTL --> [PL2302] <-- USB --> [HG255D]
+```
+
+
+## Install Openwrt Packages
+
+Packages should be installed:
+1) curl
+2) python-light with pyserial module
+3) PL2303 kmod
+
+## Config
+
+Edit 'config.py' file, 
+```
+Username = 'pushgateway username'
+Password = 'pushgateway password'
+PushUrl = 'the URL of the metric should be pushed'
+Interval = 30 # Every 30 seconds
+```
+
+## Enable init script
+
+```
+cd /etc/init.d
+ln -sf <path/to/hcho_reader.py> hcho
+```
+
+## Metric
+
+The metric for hcho ppm level,
+```
+iot_sensor_hcho_ppm{max="2000"} 41
+```
+max for '2000' is the range the sensor supported, and the '41' is the current ppm level.
